@@ -1,43 +1,68 @@
 # forms.py
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Category, LostID, IDReplacement, Payment
+from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 
-
-class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(max_length=30, required=True)
-    last_name = forms.CharField(max_length=30, required=True)
+class CustomUserRegistrationForm(forms.ModelForm):
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={
+        'class': 'form-control', 'placeholder': 'Enter your email'
+    }))
+    first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control', 'placeholder': 'First Name'
+    }))
+    last_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control', 'placeholder': 'Last Name'
+    }))
     registration_number = forms.CharField(
         max_length=20,
-        help_text="Format: MU/YY/XXXXX"
+        help_text="Format: SC211/0530/2022 or ED511/0920/2022",
+        validators=[RegexValidator(
+            regex=r'^(SC|ED)\d{3}/\d{4}/\d{4}$',
+            message="Registration number must follow the format SC211/0530/2022 or ED511/0920/2022"
+        )],
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Registration Number'})
     )
     phone_number = forms.CharField(
         max_length=13,
-        help_text="Format: +254XXXXXXXXX"
+        help_text="Format: +254XXXXXXXXX",
+        validators=[RegexValidator(
+            regex=r'^\+254\d{9}$',
+            message="Phone number must be in format +254XXXXXXXXX"
+        )],
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'})
+    )
+    password = forms.CharField(
+        min_length=8,
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter Password'}),
+        help_text="Password must be at least 8 characters long."
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
+        label="Confirm Password"
     )
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 
-                 'registration_number', 'phone_number', 'password1', 'password2')
+        fields = ['username', 'email', 'first_name', 'last_name', 'registration_number', 'phone_number']
 
-    def clean_registration_number(self):
-        reg_no = self.cleaned_data.get('registration_number')
-        if not reg_no.startswith('MU/'):
-            raise forms.ValidationError("Registration number must start with 'MU/'")
-        return reg_no
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
 
-    def clean_phone_number(self):
-        phone = self.cleaned_data.get('phone_number')
-        if not phone.startswith('+254'):
-            raise forms.ValidationError("Phone number must start with '+254'")
-        return phone
+        if password and confirm_password and password != confirm_password:
+            raise forms.ValidationError("Passwords do not match.")
+
+        return cleaned_data
+
 
 class CustomLoginForm(forms.Form):
     username = forms.CharField(max_length=150)
     password = forms.CharField(widget=forms.PasswordInput)
+
+
 
 
 

@@ -1,18 +1,53 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muranga University ID System</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Murang'a University ID System - Find and claim lost student IDs easily.">
+    <meta name="keywords" content="Murang'a University, Student ID, Lost ID, Found ID, ID Replacement">
+    <meta name="author" content="Murang'a University of Technology">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph for Social Media -->
+    <meta property="og:title" content="Murang'a University ID System">
+    <meta property="og:description" content="Find and claim lost student IDs at Murang'a University easily.">
+    <meta property="og:image" content="static/img/logo.png">  <!-- Update with your actual logo path -->
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Murang'a University ID System">
+    <meta name="twitter:description" content="Find and claim lost student IDs at Murang'a University easily.">
+    <meta name="twitter:image" content="static/img/logo.png"> 
+
+    <title>Murang'a University ID System</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/logo.png'%}" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+        <!-- Bootstrap 5 CSS -->
+    
+
+
 </head>
+
+
 <body class="bg-gray-100">
     <nav class="bg-blue-600 text-white p-4">
         <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            
             <a href="{% url 'homepage' %}" class="text-2xl font-bold">MU ID System</a>
             <div class="space-x-4">
                 {% if user.is_authenticated %}
-                    <span>Welcome, {{ user.first_name }}</span>
+                    <span>Welcome, {{ user.username }}</span>
                     <a href="{% url 'logout' %}" class="hover:text-gray-300">Logout</a>
                 {% else %}
                     <a href="{% url 'login' %}" class="hover:text-gray-300">Login</a>

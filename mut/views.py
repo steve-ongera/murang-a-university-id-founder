@@ -31,7 +31,7 @@ def home(request):
 
 def register_view(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -40,7 +40,7 @@ def register_view(request):
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
-        form = CustomUserCreationForm()
+        form = CustomUserRegistrationForm()
     return render(request, 'auth/register.html', {'form': form})
 
 def login_view(request):
