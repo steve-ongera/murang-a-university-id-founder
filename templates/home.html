@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg p-8 mb-8">
+        <h1 class="text-3xl font-bold mb-4">Muranga University ID Management System</h1>
+        <p class="text-lg mb-4">Find lost IDs, report missing ones, or apply for replacement</p>
+        {% if not user.is_authenticated %}
+            <div class="space-x-4">
+                <a href="{% url 'login' %}" class="bg-white text-blue-600 px-6 py-2 rounded-lg hover:bg-gray-100">Login</a>
+                <a href="{% url 'register' %}" class="border border-white px-6 py-2 rounded-lg hover:bg-blue-700">Register</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <a href="{% url 'home' %}" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <h3 class="text-xl font-semibold mb-2 text-blue-600">Report Lost ID</h3>
+            <p class="text-gray-600">Lost your student ID? Report it here and we'll help you find it.</p>
+        </a>
+        <a href="{% url 'home' %}" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <h3 class="text-xl font-semibold mb-2 text-blue-600">Found an ID?</h3>
+            <p class="text-gray-600">Help a fellow student by reporting a found ID card.</p>
+        </a>
+        <a href="{% url 'home' %}" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <h3 class="text-xl font-semibold mb-2 text-blue-600">Replace ID</h3>
+            <p class="text-gray-600">Apply for a replacement ID card and track your application.</p>
+        </a>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="bg-white p-4 rounded-lg shadow-md mb-8">
+        <div class="flex flex-wrap items-center gap-4">
+            <span class="font-semibold">Filter by:</span>
+            <select class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" placeholder="Search by registration number..." 
+                   class="border rounded-md px-3 py-2 flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Search</button>
+        </div>
+    </div>
+
+    <!-- Lost IDs Grid -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-6">Recently Reported Lost IDs</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for lost_id in lost_ids %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                {% if lost_id.id_front_image %}
+                    <img src="{{ lost_id.id_front_image.url }}" alt="ID Front" class="w-full h-48 object-cover">
+                {% endif %}
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 class="font-semibold text-lg">{{ lost_id.student_name }}</h3>
+                            <p class="text-gray-600">{{ lost_id.registration_number }}</p>
+                        </div>
+                        <span class="bg-yellow-100 text-yellow-800 text-sm px-2 py-1 rounded">{{ lost_id.get_status_display }}</span>
+                    </div>
+                    <div class="mb-2">
+                        <p class="text-sm text-gray-500">Category: {{ lost_id.category.name }}</p>
+                        <p class="text-sm text-gray-500">Course: {{ lost_id.course }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-sm"><strong>Last seen:</strong> {{ lost_id.last_seen_location }}</p>
+                        <p class="text-sm text-gray-500">Reported: {{ lost_id.date_reported|date:"M d, Y" }}</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-blue-600 hover:text-blue-800">View Details</button>
+                        {% if lost_id.status == 'FOUND' %}
+                            <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Claim ID</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-8">
+                <p class="text-gray-500 text-lg">No lost IDs reported yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+            <h4 class="text-xl font-semibold text-blue-600">Total Lost</h4>
+            <p class="text-3xl font-bold">{{ lost_ids.count }}</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+            <h4 class="text-xl font-semibold text-green-600">Found</h4>
+            <p class="text-3xl font-bold">{{ lost_ids.found.count }}</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+            <h4 class="text-xl font-semibold text-yellow-600">Pending</h4>
+            <p class="text-3xl font-bold">{{ lost_ids.pending.count }}</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+            <h4 class="text-xl font-semibold text-purple-600">Claimed</h4>
+            <p class="text-3xl font-bold">{{ lost_ids.claimed.count }}</p>
+        </div>
+    </div>
+
+    <!-- Help Section -->
+    <div class="bg-gray-50 rounded-lg p-8">
+        <h2 class="text-2xl font-bold mb-4">Need Help?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h3 class="font-semibold mb-2">Lost Your ID?</h3>
+                <p class="text-gray-600 mb-4">Follow these steps:</p>
+                <ol class="list-decimal list-inside space-y-2 text-gray-600">
+                    <li>Report the lost ID immediately</li>
+                    <li>Check the found IDs section regularly</li>
+                    <li>Apply for a replacement if necessary</li>
+                </ol>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-2">Found an ID?</h3>
+                <p class="text-gray-600 mb-4">Here's what to do:</p>
+                <ol class="list-decimal list-inside space-y-2 text-gray-600">
+                    <li>Report it through the 'Found ID' form</li>
+                    <li>Submit clear photos of the ID</li>
+                    <li>Drop it at the student affairs office</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

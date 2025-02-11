@@ -2,6 +2,18 @@ from django.db import models
 from django.core.validators import RegexValidator
 from decimal import Decimal
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
+
+
 class LostID(models.Model):
     STATUS_CHOICES = [
         ('PENDING', 'Pending'),
@@ -20,6 +32,7 @@ class LostID(models.Model):
         ]
     )
     course = models.CharField(max_length=100)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='lost_ids',blank=True,null=True)
     date_reported = models.DateTimeField(auto_now_add=True)
     last_seen_location = models.CharField(max_length=200)
     additional_details = models.TextField(blank=True)
