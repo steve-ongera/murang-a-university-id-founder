@@ -23,6 +23,14 @@ class LostID(models.Model):
     date_reported = models.DateTimeField(auto_now_add=True)
     last_seen_location = models.CharField(max_length=200)
     additional_details = models.TextField(blank=True)
+
+    # ID Images
+    id_front_image = models.ImageField( upload_to='students_ids/front/',blank=True,null=True )     
+    id_back_image = models.ImageField(upload_to='students_ids/back/',blank=True,null=True ) 
+    additional_image1 = models.ImageField(upload_to='students_ids/additional/',blank=True,null=True)
+    additional_image2 = models.ImageField(upload_to='students_ids/additional/',blank=True,null=True)
+    additional_image3 = models.ImageField(upload_to='students_ids/additional/',blank=True,null=True)
+
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
