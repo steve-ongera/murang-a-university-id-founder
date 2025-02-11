@@ -2,6 +2,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import Category, LostID, IDReplacement, Payment
+
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -36,3 +38,87 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomLoginForm(forms.Form):
     username = forms.CharField(max_length=150)
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter category name'})
+        }
+
+class LostIDForm(forms.ModelForm):
+    class Meta:
+        model = LostID
+        fields = '__all__'
+        widgets = {
+            'student_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter student name'}),
+            'registration_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'MU/YY/XXXXX'}),
+            'course': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter course name'}),
+            'category': forms.Select(attrs={'class': 'form-select'}),
+            'last_seen_location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter last seen location'}),
+            'additional_details': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Provide any additional details'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
+            'found_location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Location where ID was found'}),
+            'finder_contact': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Finder contact details'}),
+            'id_front_image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'id_back_image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'additional_image1': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'additional_image2': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'additional_image3': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+class IDReplacementForm(forms.ModelForm):
+    class Meta:
+        model = IDReplacement
+        fields = '__all__'
+        widgets = {
+            'student_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter student name'}),
+            'registration_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'MU/YY/XXXXX'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+254XXXXXXXXX'}),
+            'course': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter course name'}),
+            'reason': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Provide reason for ID replacement'}),
+            'police_abstract': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+        }
+
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = '__all__'
+        widgets = {
+            'replacement_application': forms.Select(attrs={'class': 'form-select'}),
+            'amount_paid': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'payment_method': forms.Select(attrs={'class': 'form-select'}),
+            'transaction_reference': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter transaction reference'}),
+            'payment_status': forms.Select(attrs={'class': 'form-select'}),
+        }
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'email', 'last_name', 'username']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter full name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter email address'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter phone number'}),
+            'username': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+
+class FoundIDForm(forms.ModelForm):
+    class Meta:
+        model = LostID
+        fields = ['student_name', 'registration_number', 'course', 'found_location', 'finder_contact', 'id_front_image', 'id_back_image']
+        widgets = {
+            'student_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter student name'}),
+            'registration_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter registration number'}),
+            'course': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter course name'}),
+            'found_location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter found location'}),
+            'finder_contact': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter finder contact'}),
+            'id_front_image': forms.FileInput(attrs={'class': 'form-control'}),
+            'id_back_image': forms.FileInput(attrs={'class': 'form-control'}),
+        }

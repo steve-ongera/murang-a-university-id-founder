@@ -17,7 +17,7 @@ from .forms import (
 )
 
 
-def home_view(request):
+def home(request):
     lost_ids = LostID.objects.all()
     categories = Category.objects.all()
     context = {
@@ -41,7 +41,7 @@ def register_view(request):
             messages.error(request, 'Please correct the errors below.')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'auth/register.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':
@@ -53,17 +53,17 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Login successful!')
-                return redirect('home')
+                return redirect('homepage')
             else:
                 messages.error(request, 'Invalid username or password.')
     else:
         form = CustomLoginForm()
-    return render(request, 'registration/login.html', {'form': form})
+    return render(request, 'auth/login.html', {'form': form})
 
 def logout_view(request):
     logout(request)
     messages.info(request, 'You have been logged out.')
-    return redirect('home')
+    return redirect('homepage')
 
 
 

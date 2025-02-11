@@ -23,14 +23,15 @@ class LostID(models.Model):
     
     student_name = models.CharField(max_length=100)
     registration_number = models.CharField(
-        max_length=20,
-        validators=[
+    max_length=20,
+    validators=[
             RegexValidator(
-                regex=r'^MU/\d{2}/\d{5}$',
-                message='Registration number must be in format MU/YY/XXXXX'
+                regex=r'^(SC|ED)\d{3}/\d{4}/\d{4}$',
+                message='Registration number must be in format SCXXX/YYYY/YYYY or EDXXX/YYYY/YYYY (e.g., SC211/0530/2022 or ED511/0920/2022)'
             )
         ]
     )
+
     course = models.CharField(max_length=100)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='lost_ids',blank=True,null=True)
     date_reported = models.DateTimeField(auto_now_add=True)

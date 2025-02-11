@@ -2,11 +2,10 @@
 from django.urls import path
 from . import views
 
-app_name = 'lost_id'
 
 urlpatterns = [
     # Authentication URLs
-    path('', views.home_view, name='home'),
+    path('', views.home, name='homepage'),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
@@ -23,32 +22,32 @@ urlpatterns = [
     path('lost-id/<int:pk>/claim/', views.claim_id, name='claim_id'),
 
     # ID Replacement
-    path('replacement/apply/', views.replacement_apply, name='replacement_apply'),
-    path('replacement/<int:pk>/', views.replacement_detail, name='replacement_detail'),
-    path('replacement/list/', views.replacement_list, name='replacement_list'),
+    # path('replacement/apply/', views.replacement_apply, name='replacement_apply'),
+    # path('replacement/<int:pk>/', views.replacement_detail, name='replacement_detail'),
+    # path('replacement/list/', views.replacement_list, name='replacement_list'),
 
     # Payment
-    path('payment/<int:replacement_id>/initiate/', views.initiate_payment, name='initiate_payment'),
-    path('payment/callback/', views.payment_callback, name='payment_callback'),
-    path('payment/<int:pk>/status/', views.payment_status, name='payment_status'),
+    # path('payment/<int:replacement_id>/initiate/', views.initiate_payment, name='initiate_payment'),
+    # path('payment/callback/', views.payment_callback, name='payment_callback'),
+    # path('payment/<int:pk>/status/', views.payment_status, name='payment_status'),
 
     # Category Views
-    path('category/<int:pk>/', views.category_detail, name='category_detail'),
-    path('category/list/', views.category_list, name='category_list'),
+    # path('category/<int:pk>/', views.category_detail, name='category_detail'),
+    # path('category/list/', views.category_list, name='category_list'),
 
     # API endpoints for AJAX calls
     path('api/lost-ids/search/', views.search_lost_ids, name='search_lost_ids'),
     path('api/lost-ids/filter/', views.filter_lost_ids, name='filter_lost_ids'),
 
     # Profile Management
-    path('profile/', views.profile_view, name='profile'),
-    path('profile/edit/', views.edit_profile, name='edit_profile'),
-    path('profile/history/', views.user_history, name='user_history'),
+    # path('profile/', views.profile_view, name='profile'),
+    # path('profile/edit/', views.edit_profile, name='edit_profile'),
+    # path('profile/history/', views.user_history, name='user_history'),
 
     # Static Pages
-    path('about/', views.about_view, name='about'),
-    path('contact/', views.contact_view, name='contact'),
-    path('faq/', views.faq_view, name='faq'),
-    path('terms/', views.terms_view, name='terms'),
-    path('privacy/', views.privacy_view, name='privacy'),
+    # path('about/', views.about_view, name='about'),
+    # path('contact/', views.contact_view, name='contact'),
+    # path('faq/', views.faq_view, name='faq'),
+    # path('terms/', views.terms_view, name='terms'),
+    # path('privacy/', views.privacy_view, name='privacy'),
 ]
