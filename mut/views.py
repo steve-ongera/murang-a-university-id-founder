@@ -36,7 +36,7 @@ def register_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Registration successful!')
-            return redirect('home')
+            return redirect('login')
         else:
             messages.error(request, 'Please correct the errors below.')
     else:

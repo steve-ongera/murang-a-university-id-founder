@@ -34,7 +34,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'})
     )
     password = forms.CharField(
-        min_length=8,
+        min_length=4,
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter Password'}),
         help_text="Password must be at least 8 characters long."
     )
