@@ -36,7 +36,7 @@ urlpatterns = [
     # path('category/list/', views.category_list, name='category_list'),
 
     # API endpoints for AJAX calls
-    path('api/lost-ids/search/', views.search_lost_ids, name='search_lost_ids'),
+    path('search-lost-ids/', views.search_lost_ids, name='search_lost_ids'),
     path('api/lost-ids/filter/', views.filter_lost_ids, name='filter_lost_ids'),
 
     # Profile Management
