@@ -2,34 +2,81 @@
 {% load static %}
 
 {% block content %}
+<style>
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+    }
+    
+    .carousel-item {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.5s ease-in-out;
+        left: 0;
+        right: 0;
+    }
+    
+    .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
 <div class="container mx-auto px-4">
-    <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg p-8 mb-8">
-        <h1 class="text-3xl font-bold mb-4">Muranga University ID Management System</h1>
-        <p class="text-lg mb-4">Find lost IDs, report missing ones, or apply for replacement</p>
-        {% if not user.is_authenticated %}
-            <div class="space-x-4">
-                <a href="{% url 'login' %}" class="bg-white text-blue-600 px-6 py-2 rounded-lg hover:bg-gray-100">Login</a>
-                <a href="{% url 'register' %}" class="border border-white px-6 py-2 rounded-lg hover:bg-blue-700">Register</a>
+    <!-- Banner Carousel Section -->
+    <div class="relative w-full h-[400px] overflow-hidden mb-8 rounded-lg">
+        <div class="carousel-container">
+            <!-- Carousel Item 1 -->
+            <div class="carousel-item">
+                <img src="{% static 'images/banner-1.jpg' %}?v=2" alt="Student Services">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-8">
+                    <h2 class="text-white text-3xl font-bold mb-2">Student ID Services</h2>
+                    <p class="text-white text-lg">Managing your student identification has never been easier</p>
+                </div>
             </div>
-        {% endif %}
+            <!-- Carousel Item 2 -->
+            <div class="carousel-item">
+                <img src="{% static 'images/banner-2.jpg' %}?v=2" alt="Quick Recovery">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-8">
+                    <h2 class="text-white text-3xl font-bold mb-2">Quick ID Recovery</h2>
+                    <p class="text-white text-lg">Found an ID? Report it and help a fellow student</p>
+                </div>
+            </div>
+            <!-- Carousel Item 3 -->
+            <div class="carousel-item">
+                <img src="{% static 'images/banner-3.jpg' %}?v=2" alt="Digital System">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-8">
+                    <h2 class="text-white text-3xl font-bold mb-2">Digital Management System</h2>
+                    <p class="text-white text-lg">Track and manage your ID status in real-time</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Dots -->
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+            <button class="carousel-dot w-4 h-4 rounded-full bg-white/50 hover:bg-white transition-colors"></button>
+            <button class="carousel-dot w-4 h-4 rounded-full bg-white/50 hover:bg-white transition-colors"></button>
+            <button class="carousel-dot w-4 h-4 rounded-full bg-white/50 hover:bg-white transition-colors"></button>
+        </div>
+
+        <!-- Arrow Navigation -->
+        <button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/30 hover:bg-white/50 p-2 rounded-full z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/30 hover:bg-white/50 p-2 rounded-full z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <a href="{% url 'homepage' %}" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <h3 class="text-xl font-semibold mb-2 text-blue-600">Report Lost ID</h3>
-            <p class="text-gray-600">Lost your student ID? Report it here and we'll help you find it.</p>
-        </a>
-        <a href="{% url 'homepage' %}" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <h3 class="text-xl font-semibold mb-2 text-blue-600">Found an ID?</h3>
-            <p class="text-gray-600">Help a fellow student by reporting a found ID card.</p>
-        </a>
-        <a href="{% url 'homepage' %}" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <h3 class="text-xl font-semibold mb-2 text-blue-600">Replace ID</h3>
-            <p class="text-gray-600">Apply for a replacement ID card and track your application.</p>
-        </a>
-    </div>
+
 
     <!-- Filter Section -->
     <div class="bg-white p-4 rounded-lg shadow-md mb-8">
@@ -133,4 +180,97 @@
         </div>
     </div>
 </div>
-{% endblock %}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.querySelector('.carousel-container');
+        const items = document.querySelectorAll('.carousel-item');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const prevButton = container.parentElement.querySelector('button:nth-of-type(1)');
+        const nextButton = container.parentElement.querySelector('button:nth-of-type(2)');
+        let currentIndex = 0;
+        let interval;
+    
+        // Initialize positions
+        function initializeCarousel() {
+            items.forEach((item, index) => {
+                item.style.transform = `translateX(${100 * (index - currentIndex)}%)`;
+            });
+            updateDots();
+        }
+    
+        // Update carousel
+        function updateCarousel() {
+            items.forEach((item, index) => {
+                item.style.transform = `translateX(${100 * (index - currentIndex)}%)`;
+            });
+            updateDots();
+        }
+    
+        // Update dots
+        function updateDots() {
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.remove('bg-white/50');
+                    dot.classList.add('bg-white');
+                } else {
+                    dot.classList.add('bg-white/50');
+                    dot.classList.remove('bg-white');
+                }
+            });
+        }
+    
+        // Next slide
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % items.length;
+            updateCarousel();
+        }
+    
+        // Previous slide
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel();
+        }
+    
+        // Start autoplay
+        function startAutoplay() {
+            interval = setInterval(nextSlide, 5000);
+        }
+    
+        // Stop autoplay
+        function stopAutoplay() {
+            clearInterval(interval);
+        }
+    
+        // Event listeners
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentIndex = index;
+                updateCarousel();
+                stopAutoplay();
+                startAutoplay();
+            });
+        });
+    
+        prevButton.addEventListener('click', () => {
+            prevSlide();
+            stopAutoplay();
+            startAutoplay();
+        });
+    
+        nextButton.addEventListener('click', () => {
+            nextSlide();
+            stopAutoplay();
+            startAutoplay();
+        });
+    
+        container.addEventListener('mouseenter', stopAutoplay);
+        container.addEventListener('mouseleave', startAutoplay);
+    
+        // Initialize carousel
+        initializeCarousel();
+        startAutoplay();
+    });
+    </script>
+    {% endblock %}

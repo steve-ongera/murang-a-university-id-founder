@@ -33,30 +33,78 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
         <!-- Bootstrap 5 CSS -->
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     
 
 
 </head>
 
 
-<body class="bg-gray-100">
-    <nav class="bg-blue-600 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <!-- Logo -->
-            
-            <a href="{% url 'homepage' %}" class="text-2xl font-bold">MU ID System</a>
-            <div class="space-x-4">
-                {% if user.is_authenticated %}
-                    <span>Welcome, {{ user.username }}</span>
-                    <a href="{% url 'logout' %}" class="hover:text-gray-300">Logout</a>
-                {% else %}
-                    <a href="{% url 'login' %}" class="hover:text-gray-300">Login</a>
-                    <a href="{% url 'register' %}" class="hover:text-gray-300">Register</a>
-                {% endif %}
+<body>
+    <!-- Top Bar -->
+    <div class="bg-[#A5CA87] text-white py-2">
+        <div class="container mx-auto px-4 flex justify-between items-center text-sm">
+            <div class="flex items-center space-x-4">
+                <a href="mailto:info@mut.ac.ke" class="flex items-center">
+                    <i class="fas fa-envelope mr-2"></i>
+                    info@mut.ac.ke
+                </a>
+                <a href="tel:+254798959217" class="flex items-center">
+                    <i class="fas fa-phone mr-2"></i>
+                    +254-798 959 217
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="#" class="hover:text-gray-200">HEF-PORTAL</a>
+                <a href="#" class="hover:text-gray-200">MUT-DPO</a>
+                <a href="#" class="hover:text-gray-200">Staff Profiles</a>
+                <a href="#" class="hover:text-gray-200">Email Retrieval</a>
+                <a href="#" class="hover:text-gray-200">Masomo Portal</a>
+                <a href="#" class="hover:text-gray-200">Career</a>
+                <a href="#" class="hover:text-gray-200">Tenders</a>
+                <a href="#" class="hover:text-gray-200">ODel</a>
+                <a href="#" class="hover:text-gray-200">Alumni</a>
+                <div class="flex items-center space-x-2">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <a href="#" class="bg-red-800 px-4 py-1 rounded hover:bg-red-900">MUT REPOSITORY</a>
             </div>
         </div>
-    </nav>
+    </div>
 
+  
+     <!-- Main Header -->
+     <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="{% static 'images/logo.png' %}" alt="MUT Logo" class="h-16">
+                <h1 class="text-2xl font-bold ml-4">Murang'a University of Technology</h1>
+            </div>
+            <nav class="flex space-x-6 items-center">
+                <a href="{% url 'homepage' %}" class="font-bold text-gray-800 hover:text-red-800">Home</a>
+                <a href="#" class="font-bold text-gray-800 hover:text-red-800">About</a>
+                <a href="#" class="font-bold text-gray-800 hover:text-red-800">Academics</a>
+                {% if user.is_authenticated %}
+                    <span class="text-blue-600 font-bold">{{ user.username }}</span>
+                    <a href="{% url 'logout' %}" class="bg-red-600 text-white px-3 py-1 rounded">Logout</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="bg-green-600 text-white px-3 py-1 rounded">Register</a>
+                    <a href="{% url 'login' %}" class="bg-blue-600 text-white px-3 py-1 rounded">Login</a>
+                {% endif %}
+            </nav>
+            
+            
+        </div>
+    </header>
+
+<body class="bg-gray-100">
+   
     {% if messages %}
     <div class="container mx-auto mt-4">
         {% for message in messages %}
@@ -71,5 +119,8 @@
         {% block content %}
         {% endblock %}
     </main>
+
+    {% include 'footer.html' %}
+    
 </body>
 </html>
