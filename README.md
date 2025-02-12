@@ -2,6 +2,9 @@
 
 MUT STORE is a comprehensive system for managing student ID cards at your institution, including lost ID reporting, ID replacement applications, and payment processing.
 
+![Screenshot ](https://github.com/steve-ongera/murang-a-university-id-founder/blob/main/screenshot/screencapture-127-0-0-1-8000-2025-02-12-16_23_44.png)
+
+
 ## Features
 
 ### Lost ID Management
